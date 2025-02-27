@@ -32,7 +32,7 @@ $products = $dom->getElementsByTagName("product");
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     $xpath = new DOMXPath($dom);
-    $productNode = $xpath->query("//product[id='$delete_id']")->item(0);
+    $productNode = $xpath->query("//product[product_id='$delete_id']")->item(0);
 
     if ($productNode) {
         // Recupera e cancella l'immagine associata
@@ -95,7 +95,7 @@ if (isset($_GET['delete_id'])) {
             <tbody>
                 <?php foreach ($products as $product): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($product->getElementsByTagName("id")->item(0)->nodeValue); ?></td>
+                        <td><?php echo htmlspecialchars($product->getElementsByTagName("product_id")->item(0)->nodeValue); ?></td>
                         <td><?php echo htmlspecialchars($product->getElementsByTagName("name")->item(0)->nodeValue); ?></td>
                         <td>€ <?php echo number_format($product->getElementsByTagName("price")->item(0)->nodeValue, 2); ?></td>
                         <td><?php echo htmlspecialchars($product->getElementsByTagName("description")->item(0)->nodeValue); ?></td>
@@ -104,7 +104,7 @@ if (isset($_GET['delete_id'])) {
                             <img src="<?php echo $product->getElementsByTagName("image_url")->item(0)->nodeValue; ?>" alt="Immagine prodotto" width="100">
                         </td>
                         <td>
-                            <a href="manage_products.php?delete_id=<?php echo $product->getElementsByTagName("id")->item(0)->nodeValue; ?>" class="btn btn-danger btn-sm">Elimina</a>
+                            <a href="manage_products.php?delete_id=<?php echo $product->getElementsByTagName("product_id")->item(0)->nodeValue; ?>" class="btn btn-danger btn-sm">Elimina</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

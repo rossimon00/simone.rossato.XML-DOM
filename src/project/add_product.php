@@ -2,12 +2,10 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
-include('auth.php');
 include('../common/navbar.php');
 include('../common/header.php');
 
-define('XML_FILE', '/../db/database.xml');
+define('XML_FILE', 'database.xml');
 
 // Verifica se l'utente è loggato e ha il ruolo di admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
@@ -101,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $newId = $productsNode->getElementsByTagName("product")->length + 1;
 
             // Aggiungi i dati al nuovo prodotto
-            $newProduct->appendChild($dom->createElement("id", $newId));
+            $newProduct->appendChild($dom->createElement("product_id", $newId));
             $newProduct->appendChild($dom->createElement("name", htmlspecialchars($name)));
             $newProduct->appendChild($dom->createElement("price", htmlspecialchars($price)));
             $newProduct->appendChild($dom->createElement("description", htmlspecialchars($description)));
@@ -121,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Reindirizza alla gestione prodotti
-  //  header("Location: manage_products.php");
+  header("Location: manage_products.php");
     exit();
 }
 ?>
