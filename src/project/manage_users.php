@@ -1,20 +1,23 @@
 <?php
-session_start(); // Assicurati che la sessione sia avviata
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+include('../common/navbar.php');
+include('../common/header.php');
 
-define('XML_FILE', __DIR__ . '/../db/database.xml');
+
+
+$xmlFile = "database.xml";
 
 // Funzione per caricare il file XML
 function loadXML() {
     global $xmlFile;
-    if (!file_exists(filename: XML_FILE)) {
+    if (!file_exists($xmlFile)) {
         die("File XML non trovato.");
     }
     $doc = new DOMDocument();
-    $doc->load(XML_FILE);
+    $doc->load($xmlFile);
     return $doc;
 }
 

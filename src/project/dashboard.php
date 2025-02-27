@@ -1,14 +1,20 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include('auth.php');
 include('../common/navbar.php'); // Includi la navbar qui
 include('../common/header.php');
 
 // Verifica se l'utente è loggato
+// Verifica se l'utente è loggato
 if (!isset($_SESSION['user_id'])) {
-    // Se non è loggato, reindirizza al login
-    header("Location: login.php");
+    // Stampa un messaggio per vedere se entra in questo blocco
+    echo "Utente non loggato, reindirizzamento...";
     exit();
 }
+
 
 // Verifica il ruolo dell'utente (admin o utente normale)
 $is_admin = ($_SESSION['role'] === 'admin');

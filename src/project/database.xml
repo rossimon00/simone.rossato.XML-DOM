@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database [
+<!ELEMENT database (users , products)>
+<!ELEMENT users (user)*>
+<!ELEMENT user (user_id , username , password , role , banned)>
+<!ELEMENT user_id (#PCDATA)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+<!ELEMENT role (#PCDATA)>
+<!ELEMENT banned (#PCDATA)>
+<!ELEMENT products (product)*>
+<!ELEMENT product (product_id , name , image_url , category , description , price)>
+<!ELEMENT product_id (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT image_url (#PCDATA)>
+<!ELEMENT category (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT price (#PCDATA)>
+]>
+<database>
+  <users>
+    <user>
+      <user_id>1740683963</user_id>
+      <username>admin</username>
+      <password>$2y$10$LpW42.RkkE5pbQhMkm0GoehCUlqzOBVbwxnkjF6CU.bU36N1tJY0y</password>
+      <role>admin</role>
+      <banned>false</banned>
+    </user>
+  </users>
+  <products>
+    <product>
+      <product_id>1</product_id>
+      <name>Insalata di Polpo</name>
+      <image_url>../assets/uploads/antipasti.png</image_url>
+      <category>antipasti</category>
+      <description>Insalata di polpo con olive e capperi.</description>
+      <price>9.50</price>
+    </product>
+    <product>
+      <product_id>2</product_id>
+      <name>Spaghetti Carbonara</name>
+      <image_url>../assets/uploads/carbonara.jpg</image_url>
+      <category>primi</category>
+      <description>Deliziosi spaghetti con crema di uovo, pancetta croccante e pepe nero.</description>
+      <price>12.50</price>
+    </product>
+    <product>
+      <product_id>3</product_id>
+      <name>Risotto ai Funghi</name>
+      <image_url>../assets/uploads/risotto.jpg</image_url>
+      <category>primi</category>
+      <description>Risotto cremoso con funghi porcini.</description>
+      <price>14.00</price>
+    </product>
+    <product>
+      <product_id>4</product_id>
+      <name>Penne Arrabbiata</name>
+      <image_url>../assets/uploads/arrabbiata.jpg</image_url>
+      <category>primi</category>
+      <description>Penne piccanti con salsa di pomodoro e peperoncino.</description>
+      <price>10.00</price>
+    </product>
+    <product>
+      <product_id>5</product_id>
+      <name>Tagliatelle al Ragù</name>
+      <image_url>../assets/uploads/tagliatelle.jpg</image_url>
+      <category>primi</category>
+      <description>Tradizionale ragù alla bolognese con tagliatelle fresche.</description>
+      <price>13.50</price>
+    </product>
+    <product>
+      <product_id>6</product_id>
+      <name>Lasagna</name>
+      <image_url>../assets/uploads/lasagna.jpg</image_url>
+      <category>primi</category>
+      <description>Lasagna ricca e cremosa, con strati di carne, besciamella e formaggio.</description>
+      <price>15.00</price>
+    </product>
+    <product>
+      <product_id>7</product_id>
+      <name>Salmone grigliato</name>
+      <image_url>../assets/uploads/salmon.jpg</image_url>
+      <category>secondi</category>
+      <description>Salmone grigliato perfettamente con burro al limone.</description>
+      <price>18.00</price>
+    </product>
+    <product>
+      <product_id>8</product_id>
+      <name>Bistecca alla Fiorentina</name>
+      <image_url>../assets/uploads/fiorentina.jpg</image_url>
+      <category>secondi</category>
+      <description>Succulenta bistecca T-bone cotta alla perfezione, servita con contorni.</description>
+      <price>25.00</price>
+    </product>
+    <product>
+      <product_id>9</product_id>
+      <name>Tiramisu</name>
+      <image_url>../assets/uploads/tiramisu.jpg</image_url>
+      <category>dessert</category>
+      <description>Classico dessert italiano con mascarpone, caffè e cacao.</description>
+      <price>7.50</price>
+    </product>
+    <product>
+      <product_id>10</product_id>
+      <name>Panna Cotta</name>
+      <image_url>../assets/uploads/panna_cotta.jpg</image_url>
+      <category>dessert</category>
+      <description>Panna cotta liscia e cremosa con coulis di frutti di bosco.</description>
+      <price>6.50</price>
+    </product>
+  </products>
+</database>

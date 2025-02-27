@@ -1,30 +1,32 @@
 <?php
-session_start();
 
-define('XML_FILE', __DIR__ . '/../db/database.xml');
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+$xmlFile ="database.xml";
 
 function login($username, $password) {
-    global $XML_FILE;
-    echo "Percorso cercato: " . realpath(__DIR__ . '/../db/database.xml');
+    global $xmlFile;
 
-    if (!file_exists($XML_FILE)) {
+    if (!file_exists($xmlFile)) {
         die("Errore: Il file XML non esiste!");
     }
 
     $dom = new DOMDocument();
-    $dom->load($XML_FILE);
+    $dom->load($xmlFile);
     $users = $dom->getElementsByTagName("user");
 
     foreach ($users as $user) {
         $storedUsername = $user->getElementsByTagName("username")->item(0)->nodeValue;
         $storedPassword = $user->getElementsByTagName("password")->item(0)->nodeValue;
         $role = $user->getElementsByTagName("role")->item(0)->nodeValue;
-        $id = $user->getElementsByTagName("id")->item(0)->nodeValue;
+        $id = $user->getElementsByTagName("user_id")->item(0)->nodeValue;
 
         // Verifica username e password hashata
         if ($storedUsername === $username && password_verify($password, $storedPassword)) {
             $_SESSION['user_id'] = $id;
             $_SESSION['role'] = $role;
+            header("Location: dashboard.php"); // Reindirizza alla dashboard
             return true;
         }
     }

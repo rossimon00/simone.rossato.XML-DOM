@@ -4,6 +4,11 @@ include('auth.php');
 include('../common/navbar.php');
 include('../common/header.php');
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 // Verifica se l'utente è loggato e ha il ruolo di admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
@@ -11,16 +16,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 // Percorso del file XML
-define('XML_FILE', __DIR__ . '/../db/database.xml');
+$xmlFile = "database.xml";
 
 // Controllo esistenza file XML
-if (!file_exists(XML_FILE)) {
+if (!file_exists($xmlFile)) {
     die("Errore: Il file XML non esiste!");
 }
 
 // Carica il file XML
 $dom = new DOMDocument();
-$dom->load(XML_FILE);
+$dom->load($xmlFile);
 $products = $dom->getElementsByTagName("product");
 
 // Funzione per eliminare un prodotto

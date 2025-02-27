@@ -2,12 +2,13 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-include('auth.php');
+
 include('../common/header.php');
 
-define('XML_FILE', __DIR__ . '/../db/database.xml');
+session_start();
+define('XML_FILE', 'database.xml');
 
-// Funzione per caricare il file XML e verificare se l'utente esiste già
+// Funzione per controllare se un utente esiste già
 function userExists($username) {
     if (!file_exists(XML_FILE)) {
         return false;
@@ -24,62 +25,80 @@ function userExists($username) {
     return false;
 }
 
-// Funzione per registrare un nuovo utente in XML
+// Funzione per registrare un utente
 function registerUser($username, $password, $role) {
-    $doc = new DOMDocument();
-
-    // Se il file XML esiste, lo carica, altrimenti crea un nuovo documento
+    $doc = new DOMDocument("1.0", "UTF-8");
+    $doc->preserveWhiteSpace = false;
+    $doc->formatOutput = true;
+    
     if (file_exists(XML_FILE)) {
         $doc->load(XML_FILE);
         $root = $doc->documentElement;
+
+        // Trova il nodo <users>
+        $usersNode = $doc->getElementsByTagName("users")->item(0);
+        if (!$usersNode) {
+            $usersNode = $doc->createElement("users");
+            $root->appendChild($usersNode);
+        }
     } else {
-        $root = $doc->createElement("users");
+        $root = $doc->createElement("database");
         $doc->appendChild($root);
+
+        $usersNode = $doc->createElement("users");
+        $root->appendChild($usersNode);
     }
 
-    // Crea un nuovo nodo utente
+    // Crea un nuovo nodo <user>
     $user = $doc->createElement("user");
 
-    $usernameNode = $doc->createElement("username", $username);
+    // Creazione ID univoco basato sul tempo
+    $userIdNode = $doc->createElement("user_id", time());
+    $usernameNode = $doc->createElement("username", htmlspecialchars($username));
     $passwordNode = $doc->createElement("password", password_hash($password, PASSWORD_DEFAULT)); // Hash della password
-    $roleNode = $doc->createElement("role", $role);
+    $roleNode = $doc->createElement("role", htmlspecialchars($role));
+    $bannedNode = $doc->createElement("banned", "false");
 
-    // Aggiunge i dati all'utente
+    // Aggiunge i nodi all'utente
+    $user->appendChild($userIdNode);
     $user->appendChild($usernameNode);
     $user->appendChild($passwordNode);
     $user->appendChild($roleNode);
+    $user->appendChild($bannedNode);
 
-    // Aggiunge il nuovo utente al file XML
-    $root->appendChild($user);
+    // Aggiunge l'utente sotto <users>
+    $usersNode->appendChild($user);
     $doc->save(XML_FILE);
 }
 
-// Controlla se il modulo è stato inviato
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $password_confirm = $_POST['password_confirm'];
-    $role = $_POST['role']; // Ruolo (user/admin)
+// Controllo invio form
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+    $password_confirm = trim($_POST['password_confirm']);
+    $role = trim($_POST['role']);
 
-    if ($password !== $password_confirm) {
-        $error_message = "Le password non corrispondono.";
+    if (empty($username) || empty($password) || empty($password_confirm)) {
+        $error_message = "Tutti i campi sono obbligatori!";
+    } elseif ($password !== $password_confirm) {
+        $error_message = "Le password non coincidono!";
     } elseif (userExists($username)) {
-        $error_message = "Questo nome utente è già in uso.";
+        $error_message = "Nome utente già esistente!";
     } else {
-        // Registra l'utente nel file XML
         registerUser($username, $password, $role);
-        $_SESSION['success_message'] = "Registrazione avvenuta con successo. Puoi ora accedere.";
         header("Location: login.php");
         exit();
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body>
     <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background: url('../assets/images/register_bg.jpg') no-repeat center center;background-size:cover">

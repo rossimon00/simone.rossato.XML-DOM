@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include('auth.php');
 include('../common/navbar.php');
 include('../common/header.php');
@@ -10,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Definizione del file XML corretto
-define('XML_FILE', __DIR__ . '/../db/database.xml');
+define('XML_FILE', 'database.xml');
 
 // Funzione per caricare i prodotti da XML
 function getProductsByCategory($category) {
